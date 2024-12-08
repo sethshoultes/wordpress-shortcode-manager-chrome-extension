@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WordPress Shortcode Manager</title>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="notification" class="notification"></div>
-
-  <div class="toolbar">
-    <button id="export-btn" class="export-btn">Export</button>
-    <button id="import-btn" class="import-btn">Import</button>
-    <input type="file" id="import-file" accept=".json">
+  <h2>WordPress Shortcode Manager</h2>
+  <div class="collapsible">
+    <div class="section-header">
+      <h3>Tools</h3>
+      <button>▾</button>
+    </div>
+    <div class="section-content">
+      <div class="toolbar">
+        <button id="export-btn" class="export-btn">Export</button>
+        <button id="import-btn" class="import-btn">Import</button>
+        <input type="file" id="import-file" accept=".json">
+      </div>
+    </div>
   </div>
 
-  <div id="save-tab">
-    <form id="save-form">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" id="title" required>
-      </div>
+  <div class="collapsible">
+    <div class="section-header">
+      <h3>Add New Shortcode</h3>
+      <button>▾</button>
+    </div>
+    <div class="section-content">
+      <form id="save-form">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" id="title" required>
+        </div>
 
-      <div class="form-group">
-        <label for="shortcode">Shortcode</label>
-        <textarea id="shortcode" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="shortcode">Shortcode</label>
+          <textarea id="shortcode" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="category">Category</label>
-        <select id="category" required>
-          <option value="">Select Category</option>
-        </select>
-      </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+          </select>
+        </div>
 
-      <button type="submit">Save Shortcode</button>
-    </form>
+        <button type="submit">Save Shortcode</button>
+      </form>
+    </div>
   </div>
 
   <div id="browse-tab">
