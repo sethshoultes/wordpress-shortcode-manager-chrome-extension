@@ -1,4 +1,4 @@
-/* WordPress Shortcode Manager Extension Styles */
+/* Base styles */
 body {
   width: 400px;
   padding: 16px;
@@ -15,7 +15,7 @@ body {
   margin-bottom: 12px;
 }
 
-/* Collapsible Sections */
+/* Collapsible sections */
 .collapsible {
   margin-bottom: 16px;
   border: 1px solid #ddd;
@@ -26,38 +26,30 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 12px;
   background-color: #f5f5f5;
   cursor: pointer;
+  user-select: none;
 }
 
 .section-header h3 {
   margin: 0;
   font-size: 14px;
-  color: #333;
+  font-weight: 600;
 }
 
-.section-header button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #666;
-  cursor: pointer;
+
+
+.collapsible.collapsed .section-header::after {
+  transform: rotate(-90deg);
 }
 
 .section-content {
-  padding: 12px;
-  background: white;
-  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-  max-height: 800px;
-  opacity: 1;
+  transition: max-height 0.3s ease-out;
   overflow: hidden;
-}
-
-.collapsible.collapsed .section-content {
-  max-height: 0;
-  opacity: 0;
-  padding: 0 12px;
+  padding: 0px;
+  background: white;
+  border-top: 1px solid #ddd;
 }
 
 /* Toolbar */
@@ -67,12 +59,14 @@ body {
   gap: 8px;
 }
 
-.toolbar button {
+.export-btn,
+.import-btn {
   padding: 6px 12px;
+  margin: 8px 10px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
   color: white;
+  cursor: pointer;
 }
 
 .export-btn {
@@ -87,23 +81,24 @@ body {
   display: none;
 }
 
-/* Form Styles */
+/* Form styles */
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 4px;
+  padding: 4px;
+  margin: 4px;
   font-weight: bold;
-  color: #333;
 }
 
 input[type="text"],
 textarea,
 select {
-  width: 100%;
+  width: 90%;
   padding: 8px;
+  margin: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
@@ -115,26 +110,18 @@ textarea {
 }
 
 button[type="submit"] {
+  width: 100%;
+  padding: 8px;
   background-color: #0073aa;
   color: white;
-  padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
 }
 
-button[type="submit"]:hover {
-  background-color: #005d8c;
-}
-
-/* Shortcode List */
-#browse-tab {
-  margin-top: 20px;
-}
-
+/* Search and list */
 #search-input {
-  width: 100%;
+  width: 90%;
   padding: 8px;
   margin-bottom: 12px;
   border: 1px solid #ddd;
@@ -161,7 +148,6 @@ button[type="submit"]:hover {
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  color: #666;
 }
 
 .shortcode-content {
@@ -170,6 +156,7 @@ button[type="submit"]:hover {
   border-radius: 4px;
   margin: 8px 0;
   font-family: monospace;
+  word-break: break-all;
 }
 
 .description {
@@ -187,26 +174,11 @@ button[type="submit"]:hover {
   padding: 4px 8px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
   color: white;
+  cursor: pointer;
 }
 
-.copy-btn {
-  background-color: #4CAF50;
-}
-
-.insert-btn {
-  background-color: #2196F3;
-}
-
-.edit-btn {
-  background-color: #FFA500;
-}
-
-.delete-btn {
-  background-color: #f44336;
-}
-
-.actions button:hover {
-  opacity: 0.9;
-}
+.copy-btn { background-color: #4CAF50; }
+.insert-btn { background-color: #2196F3; }
+.edit-btn { background-color: #FFA500; }
+.delete-btn { background-color: #f44336; }
