@@ -352,3 +352,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial load
   loadShortcodes();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize collapsible sections
+    const collapsibles = document.querySelectorAll('.collapsible');
+    
+    collapsibles.forEach(collapsible => {
+        const header = collapsible.querySelector('.section-header');
+        const content = collapsible.querySelector('.section-content');
+        
+        // Set initial state
+        const isExpanded = !collapsible.classList.contains('collapsed');
+        content.style.maxHeight = isExpanded ? content.scrollHeight + 'px' : '0';
+        
+        header.addEventListener('click', () => {
+            collapsible.classList.toggle('collapsed');
+            
+            if (collapsible.classList.contains('collapsed')) {
+                content.style.maxHeight = '0';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        });
+    });
+});
