@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WordPress Shortcode Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="notification" class="notification"></div>
+
+  <div id="save-tab">
+    <form id="save-form">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="shortcode">Shortcode</label>
+        <textarea id="shortcode" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="">Select Category</option>
+        </select>
+      </div>
+
+      <button type="submit">Save Shortcode</button>
+    </form>
+  </div>
+
+  <div id="browse-tab">
+    <input type="text" id="search-input" placeholder="Search shortcodes...">
+    <div id="shortcodes-list"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
