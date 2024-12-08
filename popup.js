@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-input');
   let currentCategory = 'all';
 
+  let editingId = null;
+
   // Function to show notification
   function showNotification(message) {
     const notification = document.getElementById('notification');
@@ -109,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="insert-btn" data-shortcode="${shortcode.shortcode}">
             Insert
           </button>
+          <button class="edit-btn" data-id="${shortcode.id}">
+            Edit
+          </button>
           <button class="delete-btn" data-id="${shortcode.id}">
             Delete
           </button>
@@ -135,6 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.delete-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         deleteShortcode(parseInt(btn.dataset.id));
+      });
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        editShortcode(id);
       });
     });
   }
@@ -174,6 +186,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Function to edit shortcode
+  function editShortcode(id) {
+    chrome.storage.local.get('shortcodes', (data) => {
+      const shortcode = data.shortcodes.find(s => s.id === id);
+      if (shortcode) {
+        // Fill form with shortcode data
+        document.getElementById('title').value = shortcode.title;
+        document.getElementById('shortcode').value = shortcode.shortcode;
+        document.getElementById('description').value = shortcode.description;
+        document.getElementById('category').value = shortcode.category;
+        
+        // Update submit button text
+        const submitButton = saveForm.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Update Shortcode';
+        
+        // Set editing state
+        editingId = id;
+        
+        // Show save tab if not already visible
+        document.getElementById('save-tab').style.display = 'block';
+        document.getElementById('browse-tab').style.display = 'none';
+      }
+    });
+  }
+
   // Save shortcode form handler
   saveForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -184,18 +221,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     chrome.storage.local.get('shortcodes', (data) => {
       const shortcodes = data.shortcodes || [];
-      shortcodes.push({
-        id: Date.now(),
-        title,
-        shortcode,
-        description,
-        category,
-        timestamp: new Date().toISOString()
-      });
+      
+      if (editingId) {
+        // Update existing shortcode
+        const index = shortcodes.findIndex(s => s.id === editingId);
+        if (index !== -1) {
+          shortcodes[index] = {
+            ...shortcodes[index],
+            title,
+            shortcode,
+            description,
+            category,
+            timestamp: new Date().toISOString()
+          };
+        }
+      } else {
+        // Add new shortcode
+        shortcodes.push({
+          id: Date.now(),
+          title,
+          shortcode,
+          description,
+          category,
+          timestamp: new Date().toISOString()
+        });
+      }
 
       chrome.storage.local.set({ shortcodes }, () => {
-        showNotification('Shortcode saved successfully!');
+        showNotification(editingId ? 'Shortcode updated successfully!' : 'Shortcode saved successfully!');
         saveForm.reset();
+        
+        // Reset form state
+        const submitButton = saveForm.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Save Shortcode';
+        editingId = null;
+        
         loadShortcodes();
       });
     });
@@ -204,6 +264,89 @@ document.addEventListener('DOMContentLoaded', () => {
   // Search functionality
   searchInput.addEventListener('input', (e) => {
     loadShortcodes(e.target.value);
+  });
+
+  // Export functionality
+  document.getElementById('export-btn').addEventListener('click', async () => {
+    try {
+      const { shortcodes, categories } = await new Promise(resolve => {
+        chrome.storage.local.get(['shortcodes', 'categories'], resolve);
+      });
+
+      const exportData = {
+        shortcodes: shortcodes || [],
+        categories: categories || [],
+        exportDate: new Date().toISOString(),
+        version: '1.0'
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `wordpress-shortcodes-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showNotification('Shortcodes exported successfully!');
+    } catch (error) {
+      console.error('Export error:', error);
+      showNotification('Failed to export shortcodes');
+    }
+  });
+
+  // Import functionality
+  document.getElementById('import-btn').addEventListener('click', () => {
+    document.getElementById('import-file').click();
+  });
+
+  document.getElementById('import-file').addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const importData = JSON.parse(text);
+
+      // Validate import data
+      if (!importData.shortcodes || !Array.isArray(importData.shortcodes)) {
+        throw new Error('Invalid import file format');
+      }
+
+      // Merge or replace existing data
+      chrome.storage.local.get(['shortcodes', 'categories'], (data) => {
+        const existingShortcodes = data.shortcodes || [];
+        const existingCategories = new Set(data.categories || []);
+
+        // Merge categories
+        importData.categories?.forEach(category => existingCategories.add(category));
+
+        // Merge shortcodes, avoiding duplicates by ID
+        const shortcodesMap = new Map(existingShortcodes.map(s => [s.id, s]));
+        importData.shortcodes.forEach(shortcode => {
+          if (!shortcodesMap.has(shortcode.id)) {
+            shortcodesMap.set(shortcode.id, shortcode);
+          }
+        });
+
+        const mergedData = {
+          shortcodes: Array.from(shortcodesMap.values()),
+          categories: Array.from(existingCategories)
+        };
+
+        chrome.storage.local.set(mergedData, () => {
+          showNotification('Shortcodes imported successfully!');
+          loadShortcodes(); // Refresh the display
+          event.target.value = ''; // Reset file input
+        });
+      });
+    } catch (error) {
+      console.error('Import error:', error);
+      showNotification('Failed to import shortcodes: ' + error.message);
+      event.target.value = ''; // Reset file input
+    }
   });
 
   // Initial load
