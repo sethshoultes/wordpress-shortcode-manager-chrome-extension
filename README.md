@@ -111,7 +111,7 @@ This project is licensed under the GNU General Public License v2.0 - see the [LI
 ## Support
 
 If you encounter any issues or have suggestions:
-1. Check the [Issues](https://github.com/sethshoultes/wordpress-shortcode-manager/issues) page
+1. Check the [Issues](https://github.com/sethshoultes/wordpress-shortcode-manager-chrome-extension/issues) page
 2. Submit a new issue if needed
 3. Include your browser version and steps to reproduce the problem
 
