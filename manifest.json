@@ -3,7 +3,8 @@
   "name": "WordPress Shortcode Manager",
   "version": "1.0",
   "description": "Store and organize WordPress shortcodes locally",
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
