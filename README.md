@@ -97,7 +97,7 @@ wordpress-shortcode-manager/
 - Other Chromium-based browsers should work but are not officially supported
 
 ## Privacy
-This extension does not collect any user data. All shortcodes and settings are stored locally in the user's browser using chrome.storage.local. No data is transmitted externally, tracked, or stored on any servers. The extension works completely offline and maintains user privacy by keeping all information on the user's local device.
+This extension (WordPress Shortcode Manager) does not collect any user data. All shortcodes and settings are stored locally in the user's browser using `chrome.storage.local`. No data is transmitted externally, tracked, or stored on any servers. The extension works offline and maintains user privacy by keeping all information on the user's local device.
 
 TL;DR This extension:
 - Stores all data locally in your browser
