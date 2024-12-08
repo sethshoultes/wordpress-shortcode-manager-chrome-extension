@@ -62,6 +62,7 @@ body {
 .export-btn,
 .import-btn {
   padding: 6px 12px;
+  margin: 8px 10px;
   border: none;
   border-radius: 4px;
   color: white;
@@ -87,15 +88,17 @@ body {
 
 .form-group label {
   display: block;
-  margin-bottom: 4px;
+  padding: 4px;
+  margin: 4px;
   font-weight: bold;
 }
 
 input[type="text"],
 textarea,
 select {
-  width: 100%;
+  width: 90%;
   padding: 8px;
+  margin: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
@@ -118,7 +121,7 @@ button[type="submit"] {
 
 /* Search and list */
 #search-input {
-  width: 100%;
+  width: 90%;
   padding: 8px;
   margin-bottom: 12px;
   border: 1px solid #ddd;
