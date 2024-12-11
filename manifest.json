@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "WordPress Shortcode Manager",
   "version": "1.1.0",
-  "description": "A Chrome extension that helps you manage, store, and quickly insert WordPress shortcodes. This extension allows you to build a personal library of shortcodes that can be easily accessed and inserted into any WordPress editor.",
+  "description": "Store and organize WordPress shortcodes locally.",
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
     "default_popup": "popup/popup.html",
